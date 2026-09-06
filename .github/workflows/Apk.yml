@@ -1,0 +1,56 @@
+build-apk:
+  runs-on: ubuntu-latest
+
+  steps:
+  - name: Checkout code
+    uses: actions/checkout@v4
+
+  - name: Checkout code
+    uses: actions/checkout@v4
+
+  - name: Setup Python ${{ env.PYTHON_VERSION }}
+    uses: actions/setup-python@v5
+    with:
+      python-version: ${{ env.PYTHON_VERSION }}
+
+  - name: Install flet-cli ${{ env.FLET_CLI_VERSION }}
+    run: |
+      python -m pip install --upgrade pip
+      pip install flet-cli==$FLET_CLI_VERSION
+
+  - name: Flet Build APK
+    run: |
+      flet build apk --verbose --build-number=$BUILD_NUMBER --build-version=$BUILD_VERSION
+
+  - name: Upload APK arm64 Artifact
+    uses: actions/upload-artifact@v4.3.4
+    with:
+      name: ${{ env.PROJECT_NAME }}_APK_arm64_v${{ env.BUILD_VERSION }}
+      path: |
+        ./build/apk/app-arm64-v8a-release.apk
+        ./build/apk/app-arm64-v8a-release.apk.sha1
+      if-no-files-found: warn
+      overwrite: true
+      compression-level: 9
+
+  - name: Upload APK armeabi Artifact
+    uses: actions/upload-artifact@v4.3.4
+    with:
+      name: ${{ env.PROJECT_NAME }}_APK_armeabi_v${{ env.BUILD_VERSION }}
+      path: |
+        ./build/apk/app-armeabi-v7a-release.apk
+        ./build/apk/app-armeabi-v7a-release.apk.sha1
+      if-no-files-found: warn
+      overwrite: true
+      compression-level: 9
+
+  - name: Upload APK x86_64 Artifact
+    uses: actions/upload-artifact@v4.3.4
+    with:
+      name: ${{ env.PROJECT_NAME }}_APK_x86_64_v${{ env.BUILD_VERSION }}
+      path: |
+        ./build/apk/app-x86_64-release.apk
+        ./build/apk/app-x86_64-release.apk.sha1
+      if-no-files-found: warn
+      overwrite: true
+      compression-level: 9
