@@ -89,6 +89,10 @@ jobs:
       # ============================================================
       # 6. Build Windows application
       # ============================================================
+      - name: Install Library background
+        run: |
+           pip install -r requirements.txt
+           
       - name: Build Windows application
         shell: pwsh
         run: |
