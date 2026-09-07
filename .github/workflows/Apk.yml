@@ -51,6 +51,10 @@ jobs:
       # ==============================
       # Build APK
       # ==============================
+      - name: Install Library background
+        run: |
+           pip install -r requirements.txt
+        
       - name: Build Android APK
         run: |
           flet build apk \
